@@ -23,8 +23,8 @@ public class SasquatchWeather {
 
         Dotenv dotenv = Dotenv.configure().filename("env").load();
 
-        private static final String API_KEY = dotenv.get("API_KEY");
-        private static final String CITY_NAME = dotenv.get("CITY_NAME");
+        final String API_KEY = dotenv.get("API_KEY");
+        final String CITY_NAME = dotenv.get("CITY_NAME");
 
         try {
             UIManager.setLookAndFeel("javax.swing.plaf.nimbus.NimbusLookAndFeel");
@@ -49,7 +49,7 @@ public class SasquatchWeather {
 
         // Create a panel to hold weather information
         JPanel weatherPanel = new JPanel();
-        JLabel weatherLabel = new JLabel(getWeatherInformation());
+        JLabel weatherLabel = new JLabel(getWeatherInformation(CITY_NAME, API_KEY));
         weatherLabel.setFont(new Font("Arial", Font.PLAIN, 18));
         weatherPanel.add(weatherLabel);
 
@@ -59,7 +59,7 @@ public class SasquatchWeather {
         System.out.println(CITY_NAME);
     }
 
-    private static String getWeatherInformation() {
+    private static String getWeatherInformation(String CITY_NAME, String API_KEY) {
         try {
             // Make API request to OpenWeatherMap
             URL url = new URL("http://api.openweathermap.org/data/2.5/weather?q=" + CITY_NAME + "&appid=" + API_KEY);
