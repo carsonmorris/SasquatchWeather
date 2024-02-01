@@ -14,9 +14,19 @@ Before running Sasquatch Weather, make sure you have the following:
 
 ## Configuration
 
-1. Create a `.env` file in the root directory of the project.
-2. Add your OpenWeatherMap API key and the desired city name in the `.env` file:
+1. Create environment variables on your own system, or create a `.env` file in the root directory of the project.
+2. Add your OpenWeatherMap API key and the desired city name in your environment variables or in the `.env` file using either:
 
-   ```dotenv
+  **(For system environment variables) In your terminal:**
+```bash
+export API_KEY=your_openweathermap_api_key
+export CITY_NAME=your_city_name
+```
+
+
+   (For a .env file) Add the following:
+   ```bash
    API_KEY=your_openweathermap_api_key
    CITY_NAME=your_city_name
+```
+   (and use the dotenv system from github)

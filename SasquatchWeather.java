@@ -16,15 +16,12 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import io.github.cdimascio.dotenv.Dotenv;
 
 public class SasquatchWeather {
     public static void main(String[] args) {
 
-        Dotenv dotenv = Dotenv.configure().filename("env").load();
-
-        final String API_KEY = dotenv.get("API_KEY");
-        final String CITY_NAME = dotenv.get("CITY_NAME");
+        final String API_KEY = System.getenv("WEATHER_API_KEY");
+        final String CITY_NAME = System.getenv("CITY_NAME");
 
         try {
             UIManager.setLookAndFeel("javax.swing.plaf.nimbus.NimbusLookAndFeel");
