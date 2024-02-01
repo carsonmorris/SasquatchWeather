@@ -84,8 +84,8 @@ public class SasquatchWeather {
         weatherLabel.setBounds(0, 50, frame.getWidth(), 30);
         layeredPane.add(weatherLabel, JLayeredPane.PALETTE_LAYER);
 
-        // Set up a timer to periodically update weather information (every 10 minutes in this example)
-        Timer timer = new Timer(1000, new ActionListener() {
+        // Set up a timer to periodically update weather information
+        Timer timer = new Timer(10000, new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 // Update weather information and refresh the GUI
