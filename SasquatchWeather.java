@@ -25,6 +25,7 @@ import javax.swing.Timer;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+
 public class SasquatchWeather {
     public static void main(String[] args) {
         final String API_KEY = System.getenv("WEATHER_API_KEY");
@@ -93,10 +94,12 @@ public class SasquatchWeather {
         });
         timer.start();
 
-        // Set up the frame content
+        // Set up the frame content        
         frame.setContentPane(layeredPane);
+        frame.setResizable(false);  // Disable resizing
         frame.pack();
         frame.setVisible(true);
+
     }
 
     private static ImageIcon createImageIcon(String path) {
