@@ -24,12 +24,20 @@ import java.io.File;
 import javax.swing.Timer;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.time.LocalTime;
 
 
 public class SasquatchWeather {
+
+    private static ImageIcon backgroundDayImage;
+    private static ImageIcon backgroundNightImage;
+
     public static void main(String[] args) {
         final String API_KEY = System.getenv("WEATHER_API_KEY");
         final String CITY_NAME = System.getenv("CITY_NAME");
+
+        backgroundDayImage = createImageIcon("assets/backgroundDay.jpg");
+        backgroundNightImage = createImageIcon("assets/backgroundNight.jpg");
 
         // Set Nimbus look and feel with a dark theme
         try {
@@ -61,9 +69,10 @@ public class SasquatchWeather {
         layeredPane.setPreferredSize(frame.getSize());
 
         // Create a label to hold the background image
-        JLabel backgroundLabel = new JLabel(backgroundImage);
+        JLabel backgroundLabel = new JLabel();
         backgroundLabel.setSize(800, 600); // Adjust the size to make the image smaller
         layeredPane.add(backgroundLabel, JLayeredPane.DEFAULT_LAYER);
+
 
         // Create a label to hold the weather icon
         ImageIcon centeredImage = createImageIcon("assets/placeholder.jpg");
@@ -90,13 +99,15 @@ public class SasquatchWeather {
         weatherLabel.setHorizontalAlignment(SwingConstants.CENTER);
         weatherLabel.setBounds(0, 50, frame.getWidth(), 30);
         layeredPane.add(weatherLabel, JLayeredPane.PALETTE_LAYER);
+        updateBackgroundImage(backgroundLabel);
 
         // Set up a timer to periodically update weather information
-        Timer timer = new Timer(10000, new ActionListener() {
+        Timer timer = new Timer(100000, new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 // Update weather information and refresh the GUI
                 weatherLabel.setText(getWeatherInformation(CITY_NAME, API_KEY, unit));
+                updateBackgroundImage(backgroundLabel);
             }
         });
         timer.start();
@@ -107,6 +118,20 @@ public class SasquatchWeather {
         frame.pack();
         frame.setVisible(true);
 
+    }
+
+    private static void updateBackgroundImage(JLabel backgroundLabel) {
+        LocalTime currentTime = LocalTime.now();
+
+        // Check if it's daytime (for example, between 6 AM and 6 PM)
+        boolean isDaytime = currentTime.isAfter(LocalTime.of(6, 0)) && currentTime.isBefore(LocalTime.of(18, 0));
+
+        // Set the appropriate background image
+        if (isDaytime) {
+            backgroundLabel.setIcon(backgroundDayImage);
+        } else {
+            backgroundLabel.setIcon(backgroundNightImage);
+        }
     }
 
     private static ImageIcon createImageIcon(String path) {
