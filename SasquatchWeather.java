@@ -9,8 +9,6 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
-import java.awt.Color;
-import java.awt.Font;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -20,11 +18,6 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import javax.swing.*;
 import java.awt.*;
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.net.HttpURLConnection;
-import java.net.URL;
 
 public class SasquatchWeather {
     public static void main(String[] args) {
@@ -72,8 +65,6 @@ public class SasquatchWeather {
 
         frame.getContentPane().add(weatherPanel);
         frame.setVisible(true);
-        System.out.println(API_KEY);
-        System.out.println(CITY_NAME);
     }
 
     private static String getWeatherInformation(String CITY_NAME, String API_KEY, TemperatureUnit unit) {
