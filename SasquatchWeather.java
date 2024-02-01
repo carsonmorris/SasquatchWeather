@@ -16,6 +16,15 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+import javax.swing.*;
+import java.awt.*;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.URL;
 
 public class SasquatchWeather {
     public static void main(String[] args) {
@@ -46,7 +55,18 @@ public class SasquatchWeather {
 
         // Create a panel to hold weather information
         JPanel weatherPanel = new JPanel();
-        JLabel weatherLabel = new JLabel(getWeatherInformation(CITY_NAME, API_KEY));
+
+        TemperatureUnit unit = (TemperatureUnit) JOptionPane.showInputDialog(
+                null,
+                "Choose temperature unit:",
+                "Temperature Unit",
+                JOptionPane.QUESTION_MESSAGE,
+                null,
+                TemperatureUnit.values(),
+                TemperatureUnit.CELSIUS
+        );
+
+        JLabel weatherLabel = new JLabel(getWeatherInformation(CITY_NAME, API_KEY, unit));
         weatherLabel.setFont(new Font("Arial", Font.PLAIN, 18));
         weatherPanel.add(weatherLabel);
 
@@ -56,7 +76,7 @@ public class SasquatchWeather {
         System.out.println(CITY_NAME);
     }
 
-    private static String getWeatherInformation(String CITY_NAME, String API_KEY) {
+    private static String getWeatherInformation(String CITY_NAME, String API_KEY, TemperatureUnit unit) {
         try {
             // Make API request to OpenWeatherMap
             URL url = new URL("http://api.openweathermap.org/data/2.5/weather?q=" + CITY_NAME + "&appid=" + API_KEY);
@@ -74,15 +94,56 @@ public class SasquatchWeather {
             reader.close();
             connection.disconnect();
 
-            // Parse the JSON response and extract relevant weather information
+            // Manually extract relevant information from JSON string
+            String jsonString = response.toString();
+            String temperature = extractValue(jsonString, "\"temp\":", ",");
+            String description = extractValue(jsonString, "\"description\":\"", "\"");
 
-            String temperature = "Temperature: " + response.toString();
-            String description = "Description: " + response.toString();
+            // Convert temperature based on the selected unit
+            double tempValue = Double.parseDouble(temperature);
+            if (unit == TemperatureUnit.CELSIUS) {
+                tempValue = kelvinToCelsius(tempValue);
+            } else if (unit == TemperatureUnit.FAHRENHEIT) {
+                tempValue = celsiusToFahrenheit(kelvinToCelsius(tempValue));
+            }
 
-            return temperature + " | " + description;
+            return "Temperature: " + String.format("%.2f", tempValue) + " " + unit.getSymbol() + " | Description: " + description;
         } catch (IOException e) {
             e.printStackTrace();
             return "Error fetching weather information";
+        }
+    }
+
+    private static String extractValue(String input, String startTag, String endTag) {
+        Pattern pattern = Pattern.compile(Pattern.quote(startTag) + "(.*?)" + Pattern.quote(endTag));
+        Matcher matcher = pattern.matcher(input);
+
+        if (matcher.find()) {
+            return matcher.group(1);
+        }
+
+        return "N/A";
+    }
+
+    private static double kelvinToCelsius(double kelvin) {
+        return kelvin - 273.15;
+    }
+
+    private static double celsiusToFahrenheit(double celsius) {
+        return celsius * 9 / 5 + 32;
+    }
+
+    private enum TemperatureUnit {
+        KELVIN("K"), CELSIUS("C"), FAHRENHEIT("F");
+
+        private final String symbol;
+
+        TemperatureUnit(String symbol) {
+            this.symbol = symbol;
+        }
+
+        public String getSymbol() {
+            return symbol;
         }
     }
 }
