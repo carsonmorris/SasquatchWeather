@@ -89,7 +89,7 @@ public class SasquatchWeather {
                 JOptionPane.QUESTION_MESSAGE,
                 null,
                 TemperatureUnit.values(),
-                TemperatureUnit.CELSIUS
+                TemperatureUnit.FAHRENHEIT
         );
 
         // Display weather information label
