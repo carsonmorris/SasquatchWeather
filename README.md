@@ -19,8 +19,9 @@ Sasquatch Weather is a personal project that fetches weather information using t
 ## Features
 
 - Current Temperatures in C, F, and K
-- A description of the weather iny our area (E.g. Partly Cloudy)
-- COMING SOON
+- A description of the weather in your area (e.g. Partly Cloudy)
+- Time-of-day backgrounds
+- MORE COMING SOON
 
 ## Prerequisites
 
