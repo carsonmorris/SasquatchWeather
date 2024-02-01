@@ -1,4 +1,19 @@
-# Sasquatch Weather
+```
+  _________                                 __         .__     
+ /   _____/____    ______________ _______ _/  |_  ____ |  |__  
+ \_____  \\__  \  /  ___/ ____/  |  \__  \\   __\/ ___\|  |  \ 
+ /        \/ __ \_\___ < <_|  |  |  // __ \|  | \  \___|   Y  \
+/_______  (____  /____  >__   |____/(____  /__|  \___  >___|  /
+        \/     \/     \/   |__|          \/          \/     \/ 
+ __      __               __  .__                              
+/  \    /  \ ____ _____ _/  |_|  |__   ___________             
+\   \/\/   // __ \\__  \\   __\  |  \_/ __ \_  __ \            
+ \        /\  ___/ / __ \|  | |   Y  \  ___/|  | \/            
+  \__/\  /  \___  >____  /__| |___|  /\___  >__|               
+       \/       \/     \/          \/     \/                   
+```
+
+![Sasquatch Weather](assets/readmeImage.png)
 
 Sasquatch Weather is a personal project that fetches weather information using the OpenWeatherMap API. The application allows you to check the current weather conditions for a specified city.
 
