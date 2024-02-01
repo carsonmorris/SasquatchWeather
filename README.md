@@ -27,7 +27,7 @@ Sasquatch Weather is a personal project that fetches weather information using t
 
 Before running Sasquatch Weather, make sure you have the following:
 
-- OpenWeatherMap API key (Sign up [here](https://openweathermap.org/) to obtain your API key)
+- OpenWeatherMap API key (Sign up [here](https://openweathermap.org/) to obtain your API key for free)
 
 ## Configuration
 
@@ -42,4 +42,4 @@ export CITY_NAME=your_city_name
 3. Type chmod +x run.sh in your terminal to allow your system to run to the script
 4. Type ./run.sh in your terminal to set the environment variables and compile the files
 
-Note: This is running on macOS Monterey 12.7.1 and is (at least currently) only set up to work on my own system, I cannot guarantee that these steps will work for everyone, but it should be pretty straight forward, as its not a super advanced application at the point of writing this.
+Note: This is running on macOS Monterey 12.7.1 and is (at least currently) only set up to work on my own system, I cannot guarantee that these steps will work for everyone, but it should be pretty straight forward; and it is not even intended to work for anyone else's system as I am still developing this. Though, if you are intending to use this in its current state and the most you should have to work with and edit are the environment variables.
