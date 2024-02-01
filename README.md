@@ -12,8 +12,10 @@
   \__/\  /  \___  >____  /__| |___|  /\___  >__|               
        \/       \/     \/          \/     \/                   
 ```
+<div style="text-align:center">
+<img src="assets/readmeImage.png" alt="Sasquatch Weather" width="300" height="300"/>
+</div>
 
-![Sasquatch Weather](assets/readmeImage.png)
 
 Sasquatch Weather is a personal project that fetches weather information using the OpenWeatherMap API. The application allows you to check the current weather conditions for a specified city.
 
