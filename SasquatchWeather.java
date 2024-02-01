@@ -65,6 +65,13 @@ public class SasquatchWeather {
         backgroundLabel.setSize(800, 600); // Adjust the size to make the image smaller
         layeredPane.add(backgroundLabel, JLayeredPane.DEFAULT_LAYER);
 
+        // Create a label to hold the weather icon
+        ImageIcon centeredImage = createImageIcon("assets/placeholder.jpg");
+        JLabel centeredImageLabel = new JLabel(centeredImage);
+        centeredImageLabel.setSize(centeredImage.getIconWidth(), centeredImage.getIconHeight());
+        centeredImageLabel.setLocation((frame.getWidth() - centeredImage.getIconWidth()) / 2, (frame.getHeight() - centeredImage.getIconHeight()) / 2);
+        layeredPane.add(centeredImageLabel, JLayeredPane.PALETTE_LAYER);
+
         // Show a dialog to choose temperature unit
         TemperatureUnit unit = (TemperatureUnit) JOptionPane.showInputDialog(
                 null,
