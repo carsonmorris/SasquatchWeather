@@ -18,13 +18,19 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import javax.swing.*;
 import java.awt.*;
+import javax.imageio.ImageIO;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import javax.swing.Timer;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 public class SasquatchWeather {
     public static void main(String[] args) {
-
         final String API_KEY = System.getenv("WEATHER_API_KEY");
         final String CITY_NAME = System.getenv("CITY_NAME");
 
+        // Set Nimbus look and feel with a dark theme
         try {
             UIManager.setLookAndFeel("javax.swing.plaf.nimbus.NimbusLookAndFeel");
 
@@ -36,19 +42,29 @@ public class SasquatchWeather {
             UIManager.put("nimbusSelectionBackground", new Color(115, 164, 209));
             UIManager.put("text", new Color(200, 200, 200));
 
-        } catch (ClassNotFoundException | InstantiationException | IllegalAccessException
-                | UnsupportedLookAndFeelException e) {
+        } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | UnsupportedLookAndFeelException e) {
             e.printStackTrace();
         }
 
+        // Create the main frame
         JFrame frame = new JFrame("Sasquatch Weather");
         frame.setSize(800, 600);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setLocationRelativeTo(null);
 
-        // Create a panel to hold weather information
-        JPanel weatherPanel = new JPanel();
+        // Load the background image
+        ImageIcon backgroundImage = createImageIcon("assets/background.jpg");
 
+        // Create a layered pane to hold components in layers
+        JLayeredPane layeredPane = new JLayeredPane();
+        layeredPane.setPreferredSize(frame.getSize());
+
+        // Create a label to hold the background image
+        JLabel backgroundLabel = new JLabel(backgroundImage);
+        backgroundLabel.setSize(800, 600); // Adjust the size to make the image smaller
+        layeredPane.add(backgroundLabel, JLayeredPane.DEFAULT_LAYER);
+
+        // Show a dialog to choose temperature unit
         TemperatureUnit unit = (TemperatureUnit) JOptionPane.showInputDialog(
                 null,
                 "Choose temperature unit:",
@@ -59,12 +75,38 @@ public class SasquatchWeather {
                 TemperatureUnit.CELSIUS
         );
 
+        // Display weather information label
         JLabel weatherLabel = new JLabel(getWeatherInformation(CITY_NAME, API_KEY, unit));
-        weatherLabel.setFont(new Font("Arial", Font.PLAIN, 18));
-        weatherPanel.add(weatherLabel);
+        weatherLabel.setFont(new Font("Helvetica", Font.BOLD, 30));
+        weatherLabel.setForeground(Color.WHITE);
+        weatherLabel.setHorizontalAlignment(SwingConstants.CENTER);
+        weatherLabel.setBounds(0, 50, frame.getWidth(), 30);
+        layeredPane.add(weatherLabel, JLayeredPane.PALETTE_LAYER);
 
-        frame.getContentPane().add(weatherPanel);
+        // Set up a timer to periodically update weather information (every 10 minutes in this example)
+        Timer timer = new Timer(1000, new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                // Update weather information and refresh the GUI
+                weatherLabel.setText(getWeatherInformation(CITY_NAME, API_KEY, unit));
+            }
+        });
+        timer.start();
+
+        // Set up the frame content
+        frame.setContentPane(layeredPane);
+        frame.pack();
         frame.setVisible(true);
+    }
+
+    private static ImageIcon createImageIcon(String path) {
+        try {
+            BufferedImage image = ImageIO.read(new File(path));
+            return new ImageIcon(image);
+        } catch (IOException e) {
+            e.printStackTrace();
+            return null;
+        }
     }
 
     private static String getWeatherInformation(String CITY_NAME, String API_KEY, TemperatureUnit unit) {
@@ -98,12 +140,38 @@ public class SasquatchWeather {
                 tempValue = celsiusToFahrenheit(kelvinToCelsius(tempValue));
             }
 
-            return "Temperature: " + String.format("%.2f", tempValue) + " " + unit.getSymbol() + " | Description: " + description;
+            return String.format("%.1f", tempValue) + " " + unit.getSymbol() + " | " + capitalizeFirstLetter(description);
         } catch (IOException e) {
             e.printStackTrace();
             return "Error fetching weather information";
         }
     }
+
+    /**
+     * This is just to make the returned description look better, may not be efficient
+     */
+    private static String capitalizeFirstLetter(String str) {
+        if (str == null || str.isEmpty()) {
+            return str;
+        }
+
+        StringBuilder result = new StringBuilder();
+        boolean capitalizeNext = true;
+
+        for (char ch : str.toCharArray()) {
+            if (Character.isWhitespace(ch)) {
+                capitalizeNext = true;
+            } else if (capitalizeNext) {
+                ch = Character.toUpperCase(ch);
+                capitalizeNext = false;
+            }
+
+            result.append(ch);
+        }
+
+        return result.toString();
+    }
+
 
     private static String extractValue(String input, String startTag, String endTag) {
         Pattern pattern = Pattern.compile(Pattern.quote(startTag) + "(.*?)" + Pattern.quote(endTag));
